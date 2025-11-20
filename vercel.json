@@ -1,19 +1,9 @@
 {
   "version": 2,
-  "name": "chemical-equipment-visualizer",
-  "builds": [
-    {
-      "src": "frontend-web/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
-    }
-  ],
+  "buildCommand": "cd frontend-web && npm install && npm run build",
+  "outputDirectory": "frontend-web/build",
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "frontend-web/$1"
-    }
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
