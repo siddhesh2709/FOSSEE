@@ -35,10 +35,6 @@ function Dashboard({ user, onLogout }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    fetchDatasets();
-  }, []);
-
   const fetchDatasets = async () => {
     try {
       const response = await api.getDatasets();
@@ -50,6 +46,11 @@ function Dashboard({ user, onLogout }) {
       setError('Failed to fetch datasets');
     }
   };
+
+  useEffect(() => {
+    fetchDatasets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const loadDataset = async (id) => {
     setLoading(true);
