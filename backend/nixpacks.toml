@@ -1,0 +1,5 @@
+[build]
+command = "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+
+[start]
+command = "python manage.py migrate && gunicorn equipment_visualizer.wsgi:application --bind 0.0.0.0:$PORT"
