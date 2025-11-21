@@ -1,102 +1,84 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.http import HttpResponse
+from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
-import pandas as pd
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+from .models import Dataset
+from .serializers import DatasetSerializer, UserSerializer
+import csv
 import io
-from reportlab.lib.pagesizes import letter, A4
+from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.units import inch
-from datetime import datetime
-
-from .models import Dataset, EquipmentRecord
-from .serializers import DatasetSerializer, DatasetListSerializer, UserSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DatasetViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet for managing equipment datasets
-    """
     serializer_class = DatasetSerializer
-    permission_classes = [AllowAny]  # Allow unauthenticated access for development
-    
+    permission_classes = [AllowAny]
+
     def get_queryset(self):
-        # Return all datasets for development (or filter by user if authenticated)
-        if self.request.user.is_authenticated:
-            return Dataset.objects.filter(user=self.request.user)
-        return Dataset.objects.all()
-    
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return DatasetListSerializer
-        return DatasetSerializer
-    
+        return Dataset.objects.all().order_by('-uploaded_at')[:5]
+
     def create(self, request, *args, **kwargs):
-        """Upload and parse CSV file"""
-        if 'file' not in request.FILES:
-            return Response(
-                {'error': 'No file provided'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        csv_file = request.FILES['file']
-        
-        # Validate file extension
-        if not csv_file.name.endswith('.csv'):
-            return Response(
-                {'error': 'File must be a CSV'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
         try:
-            # Read CSV file
-            df = pd.read_csv(csv_file)
+            file = request.FILES.get('file')
+            if not file:
+                return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+            file_content = file.read().decode('utf-8')
+            csv_reader = csv.DictReader(io.StringIO(file_content))
+            data = list(csv_reader)
             
-            # Validate required columns
-            required_columns = ['Equipment Name', 'Type', 'Flowrate', 'Pressure', 'Temperature']
-            missing_columns = [col for col in required_columns if col not in df.columns]
-            
-            if missing_columns:
-                return Response(
-                    {'error': f'Missing required columns: {", ".join(missing_columns)}'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            # Convert to JSON format
-            data = df.to_dict('records')
-            
-            # Create dataset (use authenticated user or create anonymous user)
-            from django.contrib.auth.models import User
-            user = request.user if request.user.is_authenticated else User.objects.get_or_create(username='anonymous')[0]
-            
+            if not data:
+                return Response({'error': 'Empty CSV file'}, status=status.HTTP_400_BAD_REQUEST)
+
+            flowrates = [float(row.get('Flowrate', 0)) for row in data if row.get('Flowrate')]
+            pressures = [float(row.get('Pressure', 0)) for row in data if row.get('Pressure')]
+            temperatures = [float(row.get('Temperature', 0)) for row in data if row.get('Temperature')]
+
+            summary = {
+                'total_equipment': len(data),
+                'avg_flowrate': sum(flowrates) / len(flowrates) if flowrates else 0,
+                'avg_pressure': sum(pressures) / len(pressures) if pressures else 0,
+                'avg_temperature': sum(temperatures) / len(temperatures) if temperatures else 0,
+                'min_flowrate': min(flowrates) if flowrates else 0,
+                'max_flowrate': max(flowrates) if flowrates else 0,
+                'min_pressure': min(pressures) if pressures else 0,
+                'max_pressure': max(pressures) if pressures else 0,
+                'min_temperature': min(temperatures) if temperatures else 0,
+                'max_temperature': max(temperatures) if temperatures else 0,
+            }
+
+            type_counts = {}
+            for row in data:
+                eq_type = row.get('Type', 'Unknown')
+                type_counts[eq_type] = type_counts.get(eq_type, 0) + 1
+            summary['equipment_types'] = type_counts
+
             dataset = Dataset.objects.create(
-                user=user,
-                filename=csv_file.name,
-                data=data
+                name=file.name,
+                file=file,
+                data=data,
+                summary=summary,
+                user=request.user if request.user.is_authenticated else None
             )
-            
-            # Create individual records (optional, for relational queries)
-            for record in data:
-                EquipmentRecord.objects.create(
-                    dataset=dataset,
-                    equipment_name=record['Equipment Name'],
-                    equipment_type=record['Type'],
-                    flowrate=float(record['Flowrate']),
-                    pressure=float(record['Pressure']),
-                    temperature=float(record['Temperature'])
-                )
-            
-            # Cleanup old datasets (keep last 5)
-            if user.username != 'anonymous':
-                Dataset.cleanup_old_datasets(user, keep_count=5)
+
+            old_datasets = Dataset.objects.all().order_by('-uploaded_at')[5:]
+            for old_dataset in old_datasets:
+                old_dataset.delete()
+
+            serializer = self.get_serializer(dataset)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
             
             serializer = self.get_serializer(dataset)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
