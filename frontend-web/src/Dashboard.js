@@ -151,6 +151,11 @@ function Dashboard({ user, onLogout }) {
       
       // Refresh datasets list
       await fetchDatasets();
+      
+      // Auto-load the newly uploaded dataset
+      if (response.data && response.data.id) {
+        await loadDataset(response.data.id);
+      }
     } catch (err) {
       console.error('Upload error:', err);
       const errorMessage = err.response?.data?.error || 
