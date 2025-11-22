@@ -116,13 +116,8 @@ function Dashboard({ user, onLogout }) {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.logout();
-      onLogout();
-    } catch (err) {
-      console.error('Logout error:', err);
-    }
+  const handleLogout = () => {
+    // Logout disabled
   };
 
   // Chart configurations
@@ -221,10 +216,7 @@ function Dashboard({ user, onLogout }) {
         </div>
 
         <div className="user-info">
-          <span>Welcome, {user.username}!</span>
-          <button className="btn btn-danger" onClick={handleLogout}>
-            Logout
-          </button>
+          <span>Chemical Equipment Visualizer</span>
         </div>
 
         <div className="content">
