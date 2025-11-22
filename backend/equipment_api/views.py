@@ -25,17 +25,34 @@ class DatasetViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return Dataset.objects.all().order_by('-uploaded_at')[:5]
+        try:
+            return Dataset.objects.all().order_by('-uploaded_at')[:5]
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error getting queryset: {str(e)}", exc_info=True)
+            return Dataset.objects.none()
 
     def create(self, request, *args, **kwargs):
+        import logging
+        logger = logging.getLogger(__name__)
+        
         try:
+            # Check if database tables exist
+            try:
+                Dataset.objects.count()
+            except Exception as db_error:
+                logger.error(f"Database table error: {str(db_error)}")
+                return Response({
+                    'error': 'Database not initialized',
+                    'detail': 'Please wait for database migrations to complete',
+                    'technical': str(db_error)
+                }, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
             file = request.FILES.get('file')
             if not file:
                 return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Log for debugging
-            import logging
-            logger = logging.getLogger(__name__)
             logger.info(f"Processing file: {file.name}")
 
             file_content = file.read().decode('utf-8')

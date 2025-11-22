@@ -6,6 +6,15 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://fossee-1.onrender
 axios.defaults.withCredentials = true;
 
 const api = {
+  // Health checks
+  healthCheck: () => {
+    return axios.get('https://fossee-1.onrender.com/health/');
+  },
+  
+  dbCheck: () => {
+    return axios.get('https://fossee-1.onrender.com/db-check/');
+  },
+  
   // Authentication
   login: (username, password) => {
     return axios.post(`${API_BASE_URL}/auth/login/`, { username, password });

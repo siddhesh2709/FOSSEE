@@ -161,6 +161,48 @@ body {
   display: none;
 }
 
+/* Status Messages */
+.error-message {
+  background: #fee;
+  color: #c33;
+  padding: 14px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #c33;
+  font-size: 0.9375rem;
+}
+
+.success-message {
+  background: #efe;
+  color: #3a3;
+  padding: 14px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #3a3;
+  font-size: 0.9375rem;
+}
+
+.warning-message {
+  background: #fffbf0;
+  color: #b36200;
+  padding: 14px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #f59e0b;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.info-message {
+  background: #e0f2fe;
+  color: #075985;
+  padding: 14px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #0284c7;
+  font-size: 0.9375rem;
+}
+
 /* Dataset List */
 .dataset-list {
   max-width: 900px;

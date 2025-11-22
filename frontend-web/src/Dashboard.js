@@ -34,6 +34,19 @@ function Dashboard({ user, onLogout }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [dbStatus, setDbStatus] = useState(null);
+
+  const checkDatabaseStatus = async () => {
+    try {
+      const response = await api.dbCheck();
+      setDbStatus(response.data);
+      if (response.data.status === 'ok') {
+        setError('');
+      }
+    } catch (err) {
+      setDbStatus({ status: 'error', error: 'Database unavailable' });
+    }
+  };
 
   const fetchDatasets = async () => {
     try {
@@ -43,12 +56,21 @@ function Dashboard({ user, onLogout }) {
         loadDataset(response.data[0].id);
       }
     } catch (err) {
-      setError('Failed to fetch datasets');
+      console.error('Failed to fetch datasets:', err);
+      setError('Failed to fetch datasets - Database may be initializing');
     }
   };
 
   useEffect(() => {
+    checkDatabaseStatus();
     fetchDatasets();
+    // Check database status every 10 seconds if there's an error
+    const interval = setInterval(() => {
+      if (dbStatus?.status === 'error') {
+        checkDatabaseStatus();
+      }
+    }, 10000);
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -237,6 +259,20 @@ function Dashboard({ user, onLogout }) {
         </div>
 
         <div className="content">
+          {/* Database Status Banner */}
+          {dbStatus?.status === 'error' && (
+            <div className="warning-message">
+              ⚠️ Database is initializing. Please wait 1-2 minutes and refresh the page.
+              {dbStatus.error && <div style={{fontSize: '0.875rem', marginTop: '8px'}}>Error: {dbStatus.error}</div>}
+            </div>
+          )}
+          
+          {dbStatus?.status === 'ok' && (
+            <div className="info-message" style={{marginBottom: '20px'}}>
+              ✅ Database connected ({dbStatus.dataset_count} datasets stored)
+            </div>
+          )}
+          
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">{success}</div>}
 
@@ -254,11 +290,15 @@ function Dashboard({ user, onLogout }) {
                     className="file-input-hidden"
                   />
                   <label htmlFor="fileInput" className="file-input-label">
-                    {file ? file.name : 'Select CSV file'}
+                    {file ? file.name : 'Browse files'}
                   </label>
-                  <p className="file-hint">or drop CSV here</p>
+                  <p className="file-hint">Up to 100 MB for CSV files</p>
                 </div>
-                <button type="submit" className="btn btn-upload" disabled={loading || !file}>
+                <button 
+                  type="submit" 
+                  className="btn btn-upload" 
+                  disabled={loading || !file || dbStatus?.status === 'error'}
+                >
                   {loading ? 'Processing...' : 'Upload & Analyze'}
                 </button>
               </form>
