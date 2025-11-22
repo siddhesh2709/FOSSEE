@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://fossee-1.onrender.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://chemical-backend-y0ii.onrender.com/api';
 
 // Configure axios defaults
 axios.defaults.withCredentials = true;
@@ -8,11 +8,11 @@ axios.defaults.withCredentials = true;
 const api = {
   // Health checks
   healthCheck: () => {
-    return axios.get('https://fossee-1.onrender.com/health/');
+    return axios.get('https://chemical-backend-y0ii.onrender.com/health/');
   },
   
   dbCheck: () => {
-    return axios.get('https://fossee-1.onrender.com/db-check/');
+    return axios.get('https://chemical-backend-y0ii.onrender.com/db-check/');
   },
   
   // Authentication

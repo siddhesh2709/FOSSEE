@@ -1,8 +1,8 @@
 services:
   - type: web
     name: chemical-backend
-    env: python
-    region: singapore
+    runtime: python
+    region: oregon
     plan: free
     branch: main
     rootDir: backend
@@ -12,17 +12,19 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DEBUG
-        value: false
+        value: False
       - key: SECRET_KEY
         generateValue: true
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: chemical-db
           property: connectionString
-    autoDeploy: true
 
 databases:
   - name: chemical-db
     databaseName: chemical_equipment
     user: chemical_user
+    region: oregon
     plan: free
