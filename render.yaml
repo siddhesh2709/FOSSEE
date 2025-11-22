@@ -6,7 +6,7 @@ services:
     plan: free
     branch: main
     rootDir: backend
-    buildCommand: "./build.sh"
+    buildCommand: "chmod +x build.sh && ./build.sh"
     startCommand: "gunicorn equipment_visualizer.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
@@ -15,14 +15,4 @@ services:
         value: false
       - key: SECRET_KEY
         generateValue: true
-      - key: DATABASE_URL
-        fromDatabase:
-          name: chemical-db
-          property: connectionString
     autoDeploy: true
-
-databases:
-  - name: chemical-db
-    databaseName: chemical_equipment
-    user: chemical_user
-    plan: free
