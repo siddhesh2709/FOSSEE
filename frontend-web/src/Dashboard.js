@@ -96,6 +96,28 @@ function Dashboard({ user, onLogout }) {
     setSummary(null);
   };
 
+  const deleteDataset = async (id, e) => {
+    e.stopPropagation(); // Prevent triggering loadDataset
+    if (!window.confirm('Are you sure you want to delete this dataset?')) {
+      return;
+    }
+    
+    try {
+      await api.deleteDataset(id);
+      setSuccess('Dataset deleted successfully!');
+      
+      // If deleted dataset was selected, close it
+      if (selectedDataset?.id === id) {
+        closeDataset();
+      }
+      
+      // Refresh dataset list
+      fetchDatasets();
+    } catch (err) {
+      setError('Failed to delete dataset');
+    }
+  };
+
   const handleFileUpload = async (e) => {
     e.preventDefault();
     
@@ -328,7 +350,24 @@ function Dashboard({ user, onLogout }) {
                       {new Date(dataset.uploaded_at).toLocaleString()} | {dataset.record_count} records
                     </small>
                   </div>
-                  <div className="dataset-actions">
+                  <div className="dataset-actions" style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      className="btn-delete"
+                      onClick={(e) => deleteDataset(dataset.id, e)}
+                      title="Delete dataset"
+                      style={{
+                        background: '#dc2626',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        padding: '6px 12px',
+                        fontSize: '0.875rem',
+                        cursor: 'pointer',
+                        fontWeight: '600'
+                      }}
+                    >
+                      ✕
+                    </button>
                     {selectedDataset?.id === dataset.id && (
                       <button
                         className="btn btn-success"

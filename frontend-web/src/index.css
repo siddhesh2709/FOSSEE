@@ -254,6 +254,13 @@ body {
   font-size: 0.8125rem;
 }
 
+/* Delete button hover effect */
+.btn-delete:hover {
+  background: #b91c1c !important;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
 /* Buttons */
 .btn {
   padding: 10px 20px;
