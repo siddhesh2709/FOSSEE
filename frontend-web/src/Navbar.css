@@ -1,6 +1,7 @@
 .navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: #1e293b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #334155;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -52,12 +53,12 @@
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(59, 130, 246, 0.2);
   color: white;
 }
 
 .nav-item.active {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(59, 130, 246, 0.3);
   color: white;
 }
 
@@ -69,7 +70,7 @@
   transform: translateX(-50%);
   width: 60%;
   height: 3px;
-  background: white;
+  background: #3b82f6;
   border-radius: 2px;
 }
 

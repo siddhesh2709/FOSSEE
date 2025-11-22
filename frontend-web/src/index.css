@@ -8,15 +8,15 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background: #ffffff;
-  color: #333333;
+  background: #0f172a;
+  color: #e2e8f0;
   line-height: 1.6;
   min-height: 100vh;
 }
 
 .app {
   min-height: 100vh;
-  background: #ffffff;
+  background: #0f172a;
 }
 
 .container {
@@ -37,14 +37,14 @@ body {
 .header h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #f8fafc;
   margin-bottom: 12px;
   letter-spacing: -0.3px;
 }
 
 .header p {
   font-size: 1rem;
-  color: #666666;
+  color: #94a3b8;
   font-weight: 400;
   max-width: 600px;
   margin: 0 auto;
@@ -61,12 +61,12 @@ body {
 }
 
 .upload-box {
-  background: #f8f9fa;
+  background: #1e293b;
   padding: 40px;
   border-radius: 12px;
   text-align: center;
-  border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #334155;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .upload-box h2 {
@@ -76,16 +76,16 @@ body {
 .file-input-container {
   margin: 0 0 20px 0;
   position: relative;
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
+  background: #0f172a;
+  border: 2px solid #334155;
   border-radius: 12px;
   padding: 60px 40px;
   transition: all 0.2s ease;
 }
 
 .file-input-container:hover {
-  border-color: #dc2626;
-  background: #ffffff;
+  border-color: #3b82f6;
+  background: #1e293b;
 }
 
 .file-input-container::before {
@@ -99,7 +99,7 @@ body {
   content: "Drop your file here";
   display: block;
   font-size: 1.125rem;
-  color: #1a1a1a;
+  color: #cbd5e1;
   font-weight: 600;
   margin-bottom: 20px;
 }
@@ -110,7 +110,7 @@ body {
 
 .file-input-label {
   display: inline-block;
-  background: #dc2626;
+  background: #3b82f6;
   color: white;
   padding: 14px 40px;
   border-radius: 8px;
@@ -118,11 +118,11 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
-  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
 }
 
 .file-input-label:hover {
-  background: #b91c1c;
+  background: #2563eb;
 }
 
 .file-input-label:active {
@@ -137,7 +137,7 @@ body {
 }
 
 .btn-upload {
-  background: #dc2626;
+  background: #3b82f6;
   color: white;
   padding: 12px 32px;
   border: none;
@@ -150,7 +150,7 @@ body {
 }
 
 .btn-upload:hover:not(:disabled) {
-  background: #b91c1c;
+  background: #2563eb;
 }
 
 .btn-upload:disabled {
@@ -229,52 +229,52 @@ body {
 }
 
 .dataset-list h2 {
-  color: #1a1a1a;
+  color: #f8fafc;
   font-size: 1.25rem;
   margin-bottom: 16px;
   font-weight: 600;
 }
 
 .dataset-item {
-  background: #ffffff;
+  background: #1e293b;
   padding: 24px;
   margin-bottom: 10px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #334155;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .dataset-item:hover {
-  border-color: #dc2626;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
   transform: translateY(-1px);
 }
 
 .dataset-item.active {
-  border-color: #dc2626;
-  background: #fef2f2;
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
+  border-color: #3b82f6;
+  background: #1e3a5f;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .dataset-info strong {
-  color: #1a1a1a;
+  color: #f8fafc;
   font-size: 0.9375rem;
   display: block;
   margin-bottom: 4px;
 }
 
 .dataset-info small {
-  color: #6b7280;
+  color: #94a3b8;
   font-size: 0.8125rem;
 }
 
 /* Delete button hover effect */
 .btn-delete:hover {
-  background: #b91c1c !important;
+  background: #ef4444 !important;
   transform: scale(1.05);
   transition: all 0.2s ease;
 }
@@ -291,12 +291,12 @@ body {
 }
 
 .btn-primary {
-  background: #dc2626;
+  background: #3b82f6;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #b91c1c;
+  background: #2563eb;
 }
 
 .btn-success {
@@ -338,19 +338,19 @@ body {
 
 /* Charts Section */
 .summary-section {
-  background: #ffffff;
+  background: #1e293b;
   padding: 32px;
   border-radius: 8px;
   margin-bottom: 30px;
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid #334155;
 }
 
 .summary-section h2 {
-  color: #1a1a1a;
+  color: #f8fafc;
   font-size: 1.25rem;
   margin-bottom: 24px;
   font-weight: 600;
@@ -364,14 +364,14 @@ body {
 }
 
 .stat-card {
-  background: #f9fafb;
+  background: #0f172a;
   padding: 20px;
   border-radius: 8px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #334155;
 }
 
 .stat-card h3 {
-  color: #6b7280;
+  color: #94a3b8;
   font-size: 0.6875rem;
   font-weight: 600;
   margin-bottom: 6px;
@@ -380,7 +380,7 @@ body {
 }
 
 .stat-card p {
-  color: #1a1a1a;
+  color: #f8fafc;
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -393,14 +393,14 @@ body {
 }
 
 .chart-container {
-  background: #ffffff;
+  background: #1e293b;
   padding: 28px;
   border-radius: 8px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #334155;
 }
 
 .chart-container h3 {
-  color: #1a1a1a;
+  color: #f8fafc;
   margin-bottom: 16px;
   font-size: 1rem;
   font-weight: 600;
