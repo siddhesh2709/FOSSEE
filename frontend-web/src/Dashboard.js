@@ -76,6 +76,7 @@ function Dashboard({ user, onLogout }) {
 
   const loadDataset = async (id) => {
     setLoading(true);
+    setError('');
     try {
       const [datasetRes, summaryRes] = await Promise.all([
         api.getDataset(id),
@@ -85,7 +86,8 @@ function Dashboard({ user, onLogout }) {
       setSummary(summaryRes.data);
       setError('');
     } catch (err) {
-      setError('Failed to load dataset');
+      console.error('Failed to load dataset:', err);
+      setError(`Failed to load dataset: ${err.response?.data?.error || err.message}`);
     } finally {
       setLoading(false);
     }
