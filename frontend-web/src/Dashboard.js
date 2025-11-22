@@ -429,44 +429,9 @@ function Dashboard({ user, onLogout }) {
                   ✕ Close
                 </button>
               </div>
-              <div className="summary-section">
-                <div className="summary-card">
-                  <h3>Total Equipment</h3>
-                  <div className="value">{summary.total_count}</div>
-                  <div className="details">Devices in dataset</div>
-                </div>
-
-                <div className="summary-card">
-                  <h3>Avg Flowrate</h3>
-                  <div className="value">{summary.statistics.flowrate.average.toFixed(2)}</div>
-                  <div className="details">
-                    Min: {summary.statistics.flowrate.min.toFixed(2)} | 
-                    Max: {summary.statistics.flowrate.max.toFixed(2)}
-                  </div>
-                </div>
-
-                <div className="summary-card">
-                  <h3>Avg Pressure</h3>
-                  <div className="value">{summary.statistics.pressure.average.toFixed(2)}</div>
-                  <div className="details">
-                    Min: {summary.statistics.pressure.min.toFixed(2)} | 
-                    Max: {summary.statistics.pressure.max.toFixed(2)}
-                  </div>
-                </div>
-
-                <div className="summary-card">
-                  <h3>Avg Temperature</h3>
-                  <div className="value">{summary.statistics.temperature.average.toFixed(2)}</div>
-                  <div className="details">
-                    Min: {summary.statistics.temperature.min.toFixed(2)} | 
-                    Max: {summary.statistics.temperature.max.toFixed(2)}
-                  </div>
-                </div>
-              </div>
-
-              {/* Charts Section */}
-              <div className="charts-section">
-                <div className="chart-container" style={{ maxWidth: '400px', margin: '0 auto' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '30px', marginBottom: '30px' }}>
+                {/* Left side - Pie Chart */}
+                <div className="chart-container" style={{ margin: 0 }}>
                   <h3>Equipment Type Distribution</h3>
                   <Pie 
                     data={getEquipmentTypeChart()} 
@@ -487,6 +452,45 @@ function Dashboard({ user, onLogout }) {
                   />
                 </div>
 
+                {/* Right side - Summary Stats */}
+                <div className="summary-section" style={{ margin: 0, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
+                  <div className="summary-card">
+                    <h3>Total Equipment</h3>
+                    <div className="value">{summary.total_count}</div>
+                    <div className="details">Devices in dataset</div>
+                  </div>
+
+                  <div className="summary-card">
+                    <h3>Avg Flowrate</h3>
+                    <div className="value">{summary.statistics.flowrate.average.toFixed(2)}</div>
+                    <div className="details">
+                      Min: {summary.statistics.flowrate.min.toFixed(2)} | 
+                      Max: {summary.statistics.flowrate.max.toFixed(2)}
+                    </div>
+                  </div>
+
+                  <div className="summary-card">
+                    <h3>Avg Pressure</h3>
+                    <div className="value">{summary.statistics.pressure.average.toFixed(2)}</div>
+                    <div className="details">
+                      Min: {summary.statistics.pressure.min.toFixed(2)} | 
+                      Max: {summary.statistics.pressure.max.toFixed(2)}
+                    </div>
+                  </div>
+
+                  <div className="summary-card">
+                    <h3>Avg Temperature</h3>
+                    <div className="value">{summary.statistics.temperature.average.toFixed(2)}</div>
+                    <div className="details">
+                      Min: {summary.statistics.temperature.min.toFixed(2)} | 
+                      Max: {summary.statistics.temperature.max.toFixed(2)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Charts Section */}
+              <div className="charts-section">
                 <div className="chart-container">
                   <h3>Average Parameters</h3>
                   <Bar data={getParameterChart()} options={{ responsive: true }} />
