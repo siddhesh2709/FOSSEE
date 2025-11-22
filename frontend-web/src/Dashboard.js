@@ -330,8 +330,19 @@ function Dashboard({ user, onLogout }) {
           {success && <div className="success-message">{success}</div>}
 
           {/* Upload Section */}
-          <div className="upload-section-modern">
-            <div className="upload-box">
+          <div className="upload-section-modern" style={{
+            background: '#ffffff',
+            border: '2px solid #e5e7eb',
+            borderRadius: '24px',
+            padding: '32px',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+          }}>
+            <div className="upload-box" style={{
+              background: 'transparent',
+              border: 'none',
+              padding: '0',
+              boxShadow: 'none'
+            }}>
               <h2>Upload CSV File</h2>
               <form onSubmit={handleFileUpload}>
                 <div className="file-input-container">
