@@ -278,46 +278,56 @@ function Dashboard({ user, onLogout }) {
   return (
     <div className="app">
       <div className="container">
-        <div className="header">
-          <h1>Chemical Equipment Visualizer</h1>
-          <p>Upload your CSV data for instant analysis</p>
-        </div>
-        
-        {user && (
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            gap: '16px',
-            background: '#f3f4f6',
-            padding: '12px 24px',
-            borderRadius: '24px',
-            maxWidth: 'fit-content',
-            margin: '0 auto 20px',
-            border: '1px solid #e5e7eb'
+        <div style={{
+          background: '#ffffff',
+          border: '2px solid #e5e7eb',
+          borderRadius: '24px',
+          padding: '32px',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          marginBottom: '30px'
+        }}>
+          <div className="header" style={{
+            padding: '0 0 20px',
+            margin: '0'
           }}>
-            <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>
-              Welcome, <strong style={{ color: '#111827' }}>{user.username}</strong>
-            </span>
-            <button
-              onClick={onLogout}
-              style={{
-                background: '#dc2626',
-                color: 'white',
-                border: 'none',
-                padding: '8px 16px',
-                borderRadius: '20px',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                cursor: 'pointer'
-              }}
-            >
-              Logout
-            </button>
+            <h1>Chemical Equipment Visualizer</h1>
+            <p>Upload your CSV data for instant analysis</p>
           </div>
-        )}
-
-        <div className="content">
+          
+          {user && (
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              gap: '16px',
+              background: '#f3f4f6',
+              padding: '12px 24px',
+              borderRadius: '24px',
+              maxWidth: 'fit-content',
+              margin: '0 auto 20px',
+              border: '1px solid #e5e7eb'
+            }}>
+              <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+                Welcome, <strong style={{ color: '#111827' }}>{user.username}</strong>
+              </span>
+              <button
+                onClick={onLogout}
+                style={{
+                  background: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+          
           {/* Database Status Banner - Hidden when connected */}
           {dbStatus?.status === 'error' && (
             <div className="warning-message">
@@ -331,11 +341,7 @@ function Dashboard({ user, onLogout }) {
 
           {/* Upload Section */}
           <div className="upload-section-modern" style={{
-            background: '#ffffff',
-            border: '2px solid #e5e7eb',
-            borderRadius: '24px',
-            padding: '32px',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+            margin: '0'
           }}>
             <div className="upload-box" style={{
               background: 'transparent',
@@ -380,7 +386,9 @@ function Dashboard({ user, onLogout }) {
               </ul>
             </div>
           </div>
+        </div>
 
+        <div className="content">
           {/* Dataset List */}
           {datasets.length > 0 && (
             <div className="dataset-list">

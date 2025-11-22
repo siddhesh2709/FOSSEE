@@ -29,8 +29,8 @@ body {
 /* Header Section */
 .header {
   text-align: center;
-  padding: 60px 20px 40px;
-  background: transparent;
+  padding: 60px 20px 20px;
+  background: #0000;
   margin-bottom: 30px;
 }
 
