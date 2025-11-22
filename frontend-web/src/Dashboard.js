@@ -52,9 +52,7 @@ function Dashboard({ user, onLogout }) {
     try {
       const response = await api.getDatasets();
       setDatasets(response.data);
-      if (response.data.length > 0 && !selectedDataset) {
-        loadDataset(response.data[0].id);
-      }
+      // Don't auto-load, let user click on dataset
     } catch (err) {
       console.error('Failed to fetch datasets:', err);
       setError('Failed to fetch datasets - Database may be initializing');
