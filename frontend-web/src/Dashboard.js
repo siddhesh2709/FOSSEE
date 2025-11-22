@@ -212,11 +212,7 @@ function Dashboard({ user, onLogout }) {
       <div className="container">
         <div className="header">
           <h1>⚗️ Chemical Equipment Parameter Visualizer</h1>
-          <p>Web Application - Data Visualization & Analytics</p>
-        </div>
-
-        <div className="user-info">
-          <span>Chemical Equipment Visualizer</span>
+          <p>Convert your CSV data to visual insights with incredible accuracy</p>
         </div>
 
         <div className="content">
@@ -224,20 +220,40 @@ function Dashboard({ user, onLogout }) {
           {success && <div className="success-message">{success}</div>}
 
           {/* Upload Section */}
-          <div className="upload-section">
-            <h2>📤 Upload CSV File</h2>
-            <form onSubmit={handleFileUpload}>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  accept=".csv"
-                  onChange={(e) => setFile(e.target.files[0])}
-                />
-                <button type="submit" className="btn btn-primary" disabled={loading}>
-                  {loading ? 'Uploading...' : 'Upload'}
+          <div className="upload-section-modern">
+            <div className="upload-box">
+              <h2>Upload CSV File</h2>
+              <form onSubmit={handleFileUpload}>
+                <div className="file-input-container">
+                  <input
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => setFile(e.target.files[0])}
+                    id="fileInput"
+                    className="file-input-hidden"
+                  />
+                  <label htmlFor="fileInput" className="file-input-label">
+                    {file ? file.name : 'Select CSV file'}
+                  </label>
+                  <p className="file-hint">or drop CSV here</p>
+                </div>
+                <button type="submit" className="btn btn-upload" disabled={loading || !file}>
+                  {loading ? 'Processing...' : 'Upload & Analyze'}
                 </button>
-              </div>
-            </form>
+              </form>
+            </div>
+            
+            {/* Instructions */}
+            <div className="upload-instructions">
+              <h3>📋 How to Upload</h3>
+              <ul>
+                <li><strong>File Format:</strong> CSV (Comma-Separated Values)</li>
+                <li><strong>Required Columns:</strong> Equipment Name, Type, Flowrate, Pressure, Temperature</li>
+                <li><strong>Example:</strong> Equipment Name, Type, Flowrate, Pressure, Temperature</li>
+                <li><strong>Max Size:</strong> 10 MB per file</li>
+                <li><strong>Note:</strong> Only the last 5 datasets are stored</li>
+              </ul>
+            </div>
           </div>
 
           {/* Dataset List */}
