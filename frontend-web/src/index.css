@@ -203,6 +203,22 @@ body {
   font-size: 0.9375rem;
 }
 
+/* Page Header */
+.page-header {
+  text-align: center;
+  padding: 40px 20px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 /* Dataset List */
 .dataset-list {
   max-width: 900px;

@@ -550,25 +550,25 @@ function Dashboard({ user, onLogout }) {
         )}
 
         {activeTab === 'history' && (
-          <div className="content">
-            <div className="header">
-              <h1>📊 Dataset History</h1>
-              <p>View and manage your uploaded datasets</p>
+          <div className="content" style={{paddingTop: '40px'}}>
+            <div className="page-header">
+              <h1 style={{fontSize: '2rem', fontWeight: '700', color: '#1a1a1a', marginBottom: '8px'}}>Dataset History</h1>
+              <p style={{fontSize: '1rem', color: '#6b7280'}}>View and manage your uploaded datasets</p>
             </div>
 
             {datasets.length === 0 ? (
-              <div style={{textAlign: 'center', padding: '60px 20px', color: '#6b7280'}}>
-                <p style={{fontSize: '1.125rem'}}>No datasets uploaded yet</p>
+              <div className="empty-state">
+                <p style={{fontSize: '1.125rem', color: '#6b7280', marginBottom: '20px'}}>No datasets uploaded yet</p>
                 <button 
                   className="btn" 
-                  style={{marginTop: '20px', background: '#667eea'}}
+                  style={{background: '#4b5563', padding: '12px 32px', fontSize: '0.9375rem'}}
                   onClick={() => setActiveTab('home')}
                 >
                   Upload Your First Dataset
                 </button>
               </div>
             ) : (
-              <div className="dataset-list">
+              <div className="dataset-list" style={{maxWidth: '900px', margin: '40px auto 0'}}>
                 {datasets.map((dataset) => (
                   <div
                     key={dataset.id}
@@ -610,21 +610,21 @@ function Dashboard({ user, onLogout }) {
         )}
 
         {activeTab === 'downloads' && (
-          <div className="content">
-            <div className="header">
-              <h1>📥 Downloaded Reports</h1>
-              <p>View your PDF report download history</p>
+          <div className="content" style={{paddingTop: '40px'}}>
+            <div className="page-header">
+              <h1 style={{fontSize: '2rem', fontWeight: '700', color: '#1a1a1a', marginBottom: '8px'}}>Downloaded Reports</h1>
+              <p style={{fontSize: '1rem', color: '#6b7280'}}>View your PDF report download history</p>
             </div>
 
             {downloadedFiles.length === 0 ? (
-              <div style={{textAlign: 'center', padding: '60px 20px', color: '#6b7280'}}>
-                <p style={{fontSize: '1.125rem'}}>No downloads yet</p>
-                <p style={{fontSize: '0.9375rem', marginTop: '8px'}}>Download a PDF report from the dataset view</p>
+              <div className="empty-state">
+                <p style={{fontSize: '1.125rem', color: '#6b7280', marginBottom: '8px'}}>No downloads yet</p>
+                <p style={{fontSize: '0.9375rem', color: '#9ca3af'}}>Download a PDF report from the dataset view</p>
               </div>
             ) : (
-              <div className="dataset-list">
+              <div className="dataset-list" style={{maxWidth: '900px', margin: '40px auto 0'}}>
                 {downloadedFiles.map((download) => (
-                  <div key={download.id} className="dataset-item">
+                  <div key={download.id} className="dataset-item" style={{cursor: 'default'}}>
                     <div className="dataset-info">
                       <strong>{download.filename}</strong>
                       <br />
