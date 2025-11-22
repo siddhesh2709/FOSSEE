@@ -33,12 +33,19 @@ class DatasetViewSet(viewsets.ModelViewSet):
             if not file:
                 return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
 
+            # Log for debugging
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.info(f"Processing file: {file.name}")
+
             file_content = file.read().decode('utf-8')
             csv_reader = csv.DictReader(io.StringIO(file_content))
             data = list(csv_reader)
             
             if not data:
                 return Response({'error': 'Empty CSV file'}, status=status.HTTP_400_BAD_REQUEST)
+
+            logger.info(f"Parsed {len(data)} rows")
 
             flowrates = [float(row.get('Flowrate', 0)) for row in data if row.get('Flowrate')]
             pressures = [float(row.get('Pressure', 0)) for row in data if row.get('Pressure')]
@@ -63,11 +70,13 @@ class DatasetViewSet(viewsets.ModelViewSet):
                 type_counts[eq_type] = type_counts.get(eq_type, 0) + 1
             summary['equipment_types'] = type_counts
 
+            logger.info("Creating dataset...")
             dataset = Dataset.objects.create(
                 filename=file.name,
                 data=data,
                 user=request.user if request.user.is_authenticated else None
             )
+            logger.info(f"Dataset created: {dataset.id}")
 
             old_datasets = Dataset.objects.all().order_by('-uploaded_at')[5:]
             for old_dataset in old_datasets:
@@ -77,6 +86,9 @@ class DatasetViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error in create: {str(e)}", exc_info=True)
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
             
             serializer = self.get_serializer(dataset)
