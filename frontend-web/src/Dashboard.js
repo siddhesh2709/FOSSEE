@@ -282,7 +282,19 @@ function Dashboard({ user, onLogout }) {
           <h1>Chemical Equipment Visualizer</h1>
           <p>Upload your CSV data for instant analysis</p>
           {user && (
-            <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
+            <div style={{ 
+              marginTop: '16px', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              gap: '16px',
+              background: '#f3f4f6',
+              padding: '12px 24px',
+              borderRadius: '24px',
+              maxWidth: 'fit-content',
+              margin: '16px auto 0',
+              border: '1px solid #e5e7eb'
+            }}>
               <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>
                 Welcome, <strong style={{ color: '#111827' }}>{user.username}</strong>
               </span>
@@ -293,7 +305,7 @@ function Dashboard({ user, onLogout }) {
                   color: 'white',
                   border: 'none',
                   padding: '8px 16px',
-                  borderRadius: '6px',
+                  borderRadius: '20px',
                   fontSize: '0.875rem',
                   fontWeight: '600',
                   cursor: 'pointer'
