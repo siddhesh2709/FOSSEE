@@ -276,6 +276,28 @@ function Dashboard({ user, onLogout }) {
         <div className="header">
           <h1>Chemical Equipment Visualizer</h1>
           <p>Upload your CSV data for instant analysis</p>
+          {user && (
+            <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
+              <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>
+                Welcome, <strong style={{ color: '#f8fafc' }}>{user.username}</strong>
+              </span>
+              <button
+                onClick={onLogout}
+                style={{
+                  background: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="content">
