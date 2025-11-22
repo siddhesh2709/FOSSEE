@@ -13,7 +13,6 @@ import {
 } from 'chart.js';
 import { Bar, Pie, Line } from 'react-chartjs-2';
 import api from './api';
-import Navbar from './Navbar';
 
 ChartJS.register(
   CategoryScale,
@@ -36,8 +35,6 @@ function Dashboard({ user, onLogout }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [dbStatus, setDbStatus] = useState(null);
-  const [activeTab, setActiveTab] = useState('home');
-  const [downloadedFiles, setDownloadedFiles] = useState([]);
 
   const checkDatabaseStatus = async () => {
     try {
@@ -180,34 +177,10 @@ function Dashboard({ user, onLogout }) {
       link.click();
       link.remove();
       
-      // Save to downloads list
-      const downloadRecord = {
-        id: Date.now(),
-        filename: filename,
-        datasetName: selectedDataset.filename,
-        downloadedAt: new Date().toISOString(),
-        size: (response.data.size / 1024).toFixed(2) + ' KB'
-      };
-      
-      const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
-      downloads.unshift(downloadRecord);
-      localStorage.setItem('downloads', JSON.stringify(downloads.slice(0, 20))); // Keep last 20
-      setDownloadedFiles(downloads.slice(0, 20));
-      
       setSuccess('PDF downloaded successfully!');
     } catch (err) {
       setError('Failed to download PDF');
     }
-  };
-
-  useEffect(() => {
-    // Load downloads from localStorage
-    const downloads = JSON.parse(localStorage.getItem('downloads') || '[]');
-    setDownloadedFiles(downloads);
-  }, []);
-
-  const handleLogout = () => {
-    // Logout disabled
   };
 
   // Chart configurations
@@ -299,22 +272,23 @@ function Dashboard({ user, onLogout }) {
 
   return (
     <div className="app">
-      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
-      
       <div className="container">
-        {activeTab === 'home' && (
-          <>
-            <div className="content">
-              {/* Database Status Banner - Hidden when connected */}
-              {dbStatus?.status === 'error' && (
-                <div className="warning-message">
-                  ⚠️ Database is initializing. Please wait 1-2 minutes and refresh the page.
-                  {dbStatus.error && <div style={{fontSize: '0.875rem', marginTop: '8px'}}>Error: {dbStatus.error}</div>}
-                </div>
-              )}
-              
-              {error && <div className="error-message">{error}</div>}
-              {success && <div className="success-message">{success}</div>}
+        <div className="header">
+          <h1>Chemical Equipment Visualizer</h1>
+          <p>Upload your CSV data for instant analysis</p>
+        </div>
+
+        <div className="content">
+          {/* Database Status Banner - Hidden when connected */}
+          {dbStatus?.status === 'error' && (
+            <div className="warning-message">
+              ⚠️ Database is initializing. Please wait 1-2 minutes and refresh the page.
+              {dbStatus.error && <div style={{fontSize: '0.875rem', marginTop: '8px'}}>Error: {dbStatus.error}</div>}
+            </div>
+          )}
+          
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">{success}</div>}
 
           {/* Upload Section */}
           <div className="upload-section-modern">
@@ -545,98 +519,6 @@ function Dashboard({ user, onLogout }) {
             </div>
           )}
         </div>
-        </>
-        )}
-
-        {activeTab === 'history' && (
-          <div className="content" style={{paddingTop: '40px'}}>
-            <div className="page-header">
-              <h1 style={{fontSize: '2rem', fontWeight: '700', color: '#1a1a1a', marginBottom: '8px'}}>Dataset History</h1>
-              <p style={{fontSize: '1rem', color: '#6b7280'}}>View and manage your uploaded datasets</p>
-            </div>
-
-            {datasets.length === 0 ? (
-              <div className="empty-state">
-                <p style={{fontSize: '1.125rem', color: '#6b7280', marginBottom: '20px'}}>No datasets uploaded yet</p>
-                <button 
-                  className="btn" 
-                  style={{background: '#4b5563', padding: '12px 32px', fontSize: '0.9375rem'}}
-                  onClick={() => setActiveTab('home')}
-                >
-                  Upload Your First Dataset
-                </button>
-              </div>
-            ) : (
-              <div className="dataset-list" style={{maxWidth: '900px', margin: '40px auto 0'}}>
-                {datasets.map((dataset) => (
-                  <div
-                    key={dataset.id}
-                    className="dataset-item"
-                    onClick={() => {
-                      loadDataset(dataset.id);
-                      setActiveTab('home');
-                    }}
-                  >
-                    <div className="dataset-info">
-                      <strong>{dataset.filename}</strong>
-                      <br />
-                      <small>
-                        {new Date(dataset.uploaded_at).toLocaleString()} | {dataset.record_count} records
-                      </small>
-                    </div>
-                    <button
-                      className="btn-delete"
-                      onClick={(e) => deleteDataset(dataset.id, e)}
-                      title="Delete dataset"
-                      style={{
-                        background: '#dc2626',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        padding: '6px 12px',
-                        fontSize: '0.875rem',
-                        cursor: 'pointer',
-                        fontWeight: '600'
-                      }}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'downloads' && (
-          <div className="content" style={{paddingTop: '40px'}}>
-            <div className="page-header">
-              <h1 style={{fontSize: '2rem', fontWeight: '700', color: '#1a1a1a', marginBottom: '8px'}}>Downloaded Reports</h1>
-              <p style={{fontSize: '1rem', color: '#6b7280'}}>View your PDF report download history</p>
-            </div>
-
-            {downloadedFiles.length === 0 ? (
-              <div className="empty-state">
-                <p style={{fontSize: '1.125rem', color: '#6b7280', marginBottom: '8px'}}>No downloads yet</p>
-                <p style={{fontSize: '0.9375rem', color: '#9ca3af'}}>Download a PDF report from the dataset view</p>
-              </div>
-            ) : (
-              <div className="dataset-list" style={{maxWidth: '900px', margin: '40px auto 0'}}>
-                {downloadedFiles.map((download) => (
-                  <div key={download.id} className="dataset-item" style={{cursor: 'default'}}>
-                    <div className="dataset-info">
-                      <strong>{download.filename}</strong>
-                      <br />
-                      <small>
-                        Dataset: {download.datasetName} | Downloaded: {new Date(download.downloadedAt).toLocaleString()} | Size: {download.size}
-                      </small>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
