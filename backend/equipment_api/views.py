@@ -26,12 +26,19 @@ class DatasetViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         try:
-            return Dataset.objects.all().order_by('-uploaded_at')[:5]
+            # Return QuerySet, not sliced list - let DRF handle pagination
+            return Dataset.objects.all().order_by('-uploaded_at')
         except Exception as e:
             import logging
             logger = logging.getLogger(__name__)
             logger.error(f"Error getting queryset: {str(e)}", exc_info=True)
             return Dataset.objects.none()
+    
+    def list(self, request, *args, **kwargs):
+        """Override list to return only last 5 datasets"""
+        queryset = self.get_queryset()[:5]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         import logging
