@@ -471,9 +471,25 @@ function Dashboard({ user, onLogout }) {
 
               {/* Charts Section */}
               <div className="charts-section">
-                <div className="chart-container">
+                <div className="chart-container" style={{ maxWidth: '400px', margin: '0 auto' }}>
                   <h3>Equipment Type Distribution</h3>
-                  <Pie data={getEquipmentTypeChart()} />
+                  <Pie 
+                    data={getEquipmentTypeChart()} 
+                    options={{ 
+                      responsive: true,
+                      maintainAspectRatio: true,
+                      plugins: {
+                        legend: {
+                          position: 'bottom',
+                          labels: {
+                            font: {
+                              size: 11
+                            }
+                          }
+                        }
+                      }
+                    }} 
+                  />
                 </div>
 
                 <div className="chart-container">
