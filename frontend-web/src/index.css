@@ -65,9 +65,9 @@ body {
   background: #ffffff;
   padding: 50px 40px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   text-align: center;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
 }
 
 .upload-box h2 {
@@ -164,7 +164,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -260,8 +260,8 @@ body {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e5e7eb;
 }
 
 .summary-section h2 {
@@ -282,7 +282,7 @@ body {
   background: #f9fafb;
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
 }
 
 .stat-card h3 {
@@ -311,7 +311,7 @@ body {
   background: #ffffff;
   padding: 28px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
 }
 
 .chart-container h3 {
