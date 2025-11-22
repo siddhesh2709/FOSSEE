@@ -24,13 +24,19 @@ const api = {
   },
   
   // Datasets
-  uploadDataset: (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
+  uploadDataset: (formData) => {
+    // Ensure formData is FormData object
+    if (!(formData instanceof FormData)) {
+      const newFormData = new FormData();
+      newFormData.append('file', formData);
+      formData = newFormData;
+    }
+    
     return axios.post(`${API_BASE_URL}/datasets/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      timeout: 30000, // 30 second timeout
     });
   },
   

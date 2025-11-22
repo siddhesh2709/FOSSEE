@@ -76,8 +76,16 @@ function Dashboard({ user, onLogout }) {
 
   const handleFileUpload = async (e) => {
     e.preventDefault();
+    
+    // Validate file selection
     if (!file) {
       setError('Please select a file');
+      return;
+    }
+
+    // Validate file type
+    if (!file.name.endsWith('.csv')) {
+      setError('Please select a valid CSV file');
       return;
     }
 
@@ -86,13 +94,26 @@ function Dashboard({ user, onLogout }) {
     setSuccess('');
 
     try {
-      await api.uploadDataset(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      console.log('Uploading file:', file.name);
+      const response = await api.uploadDataset(formData);
+      console.log('Upload response:', response);
+      
       setSuccess('File uploaded successfully!');
       setFile(null);
       e.target.reset();
-      fetchDatasets();
+      
+      // Refresh datasets list
+      await fetchDatasets();
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to upload file');
+      console.error('Upload error:', err);
+      const errorMessage = err.response?.data?.error || 
+                          err.response?.data?.detail || 
+                          err.message || 
+                          'Failed to upload file';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
