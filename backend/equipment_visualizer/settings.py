@@ -142,8 +142,14 @@ CSRF_COOKIE_SAMESITE = None
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins for now
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000,https://*.vercel.app').split(',')
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000').split(',')
+ALLOWED_HOSTS = ['*']  # Allow all hosts
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://fossee1.vercel.app',
+    'https://*.vercel.app',
+    'https://chemical-backend-1xii.onrender.com',
+]
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
