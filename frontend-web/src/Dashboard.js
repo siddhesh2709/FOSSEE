@@ -278,8 +278,8 @@ function Dashboard({ user, onLogout }) {
           <p>Upload your CSV data for instant analysis</p>
           {user && (
             <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
-              <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>
-                Welcome, <strong style={{ color: '#f8fafc' }}>{user.username}</strong>
+              <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+                Welcome, <strong style={{ color: '#111827' }}>{user.username}</strong>
               </span>
               <button
                 onClick={onLogout}
