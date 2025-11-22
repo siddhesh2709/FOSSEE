@@ -304,11 +304,6 @@ function Dashboard({ user, onLogout }) {
       <div className="container">
         {activeTab === 'home' && (
           <>
-            <div className="header">
-              <h1>Chemical Equipment Visualizer</h1>
-              <p>Upload your CSV data for instant analysis</p>
-            </div>
-
             <div className="content">
               {/* Database Status Banner - Hidden when connected */}
               {dbStatus?.status === 'error' && (
