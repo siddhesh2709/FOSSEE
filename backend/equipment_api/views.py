@@ -64,10 +64,8 @@ class DatasetViewSet(viewsets.ModelViewSet):
             summary['equipment_types'] = type_counts
 
             dataset = Dataset.objects.create(
-                name=file.name,
-                file=file,
+                filename=file.name,
                 data=data,
-                summary=summary,
                 user=request.user if request.user.is_authenticated else None
             )
 

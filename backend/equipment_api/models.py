@@ -5,7 +5,7 @@ import json
 
 class Dataset(models.Model):
     """Model to store uploaded datasets"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     filename = models.CharField(max_length=255)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     data = models.JSONField()  # Store parsed CSV data as JSON
@@ -21,31 +21,47 @@ class Dataset(models.Model):
         if not self.data:
             return {}
         
-        import pandas as pd
-        df = pd.DataFrame(self.data)
+        # Extract values
+        flowrates = [float(row.get('Flowrate', 0)) for row in self.data if row.get('Flowrate')]
+        pressures = [float(row.get('Pressure', 0)) for row in self.data if row.get('Pressure')]
+        temperatures = [float(row.get('Temperature', 0)) for row in self.data if row.get('Temperature')]
+        
+        # Calculate std dev
+        def std_dev(values):
+            if not values:
+                return 0
+            mean = sum(values) / len(values)
+            variance = sum((x - mean) ** 2 for x in values) / len(values)
+            return variance ** 0.5
+        
+        # Equipment type counts
+        type_counts = {}
+        for row in self.data:
+            eq_type = row.get('Type', 'Unknown')
+            type_counts[eq_type] = type_counts.get(eq_type, 0) + 1
         
         # Calculate statistics
         summary = {
-            'total_count': len(df),
-            'equipment_types': df['Type'].value_counts().to_dict(),
+            'total_count': len(self.data),
+            'equipment_types': type_counts,
             'statistics': {
                 'flowrate': {
-                    'average': float(df['Flowrate'].mean()),
-                    'min': float(df['Flowrate'].min()),
-                    'max': float(df['Flowrate'].max()),
-                    'std': float(df['Flowrate'].std())
+                    'average': sum(flowrates) / len(flowrates) if flowrates else 0,
+                    'min': min(flowrates) if flowrates else 0,
+                    'max': max(flowrates) if flowrates else 0,
+                    'std': std_dev(flowrates)
                 },
                 'pressure': {
-                    'average': float(df['Pressure'].mean()),
-                    'min': float(df['Pressure'].min()),
-                    'max': float(df['Pressure'].max()),
-                    'std': float(df['Pressure'].std())
+                    'average': sum(pressures) / len(pressures) if pressures else 0,
+                    'min': min(pressures) if pressures else 0,
+                    'max': max(pressures) if pressures else 0,
+                    'std': std_dev(pressures)
                 },
                 'temperature': {
-                    'average': float(df['Temperature'].mean()),
-                    'min': float(df['Temperature'].min()),
-                    'max': float(df['Temperature'].max()),
-                    'std': float(df['Temperature'].std())
+                    'average': sum(temperatures) / len(temperatures) if temperatures else 0,
+                    'min': min(temperatures) if temperatures else 0,
+                    'max': max(temperatures) if temperatures else 0,
+                    'std': std_dev(temperatures)
                 }
             }
         }
