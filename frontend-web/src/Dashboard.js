@@ -373,8 +373,18 @@ function Dashboard({ user, onLogout }) {
                           e.stopPropagation();
                           handleDownloadPDF();
                         }}
+                        style={{
+                          background: '#16a34a',
+                          color: 'white',
+                          padding: '8px 16px',
+                          borderRadius: '6px',
+                          border: 'none',
+                          fontSize: '0.875rem',
+                          fontWeight: '600',
+                          cursor: 'pointer'
+                        }}
                       >
-                        Download PDF
+                        📄 Download PDF
                       </button>
                     )}
                   </div>
