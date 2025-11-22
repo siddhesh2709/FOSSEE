@@ -259,17 +259,11 @@ function Dashboard({ user, onLogout }) {
         </div>
 
         <div className="content">
-          {/* Database Status Banner */}
+          {/* Database Status Banner - Hidden when connected */}
           {dbStatus?.status === 'error' && (
             <div className="warning-message">
               ⚠️ Database is initializing. Please wait 1-2 minutes and refresh the page.
               {dbStatus.error && <div style={{fontSize: '0.875rem', marginTop: '8px'}}>Error: {dbStatus.error}</div>}
-            </div>
-          )}
-          
-          {dbStatus?.status === 'ok' && (
-            <div className="info-message" style={{marginBottom: '20px'}}>
-              ✅ Database connected ({dbStatus.dataset_count} datasets stored)
             </div>
           )}
           
