@@ -211,8 +211,8 @@ function Dashboard({ user, onLogout }) {
     <div className="app">
       <div className="container">
         <div className="header">
-          <h1>⚗️ Chemical Equipment Parameter Visualizer</h1>
-          <p>Convert your CSV data to visual insights with incredible accuracy</p>
+          <h1>Chemical Equipment Visualizer</h1>
+          <p>Upload your CSV data for instant analysis</p>
         </div>
 
         <div className="content">
